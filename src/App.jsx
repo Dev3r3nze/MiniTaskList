@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-      <h1>En construcción...</h1>
+      <h1>En construcción</h1>
     </>
   )
 }
