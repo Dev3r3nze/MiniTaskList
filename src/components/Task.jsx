@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-export default function Task({title, finished, setFinished}) {
+export default function Task({title, finished, setFinished,lightMode}) {
 
 
     function handleChangeFinished(){
@@ -15,9 +15,9 @@ export default function Task({title, finished, setFinished}) {
                 checked={finished}
             />
             {finished ? (
-                <label className="taskTittle"><del>{title}</del></label>
+                <label className={`taskTittle ${lightMode? "": "light"}`}><del>{title}</del></label>
             ) : (
-                <label className="taskTittle">{title}</label>
+                <label className={`taskTittle ${lightMode? "": "light"}`}>{title}</label>
             )}
         </div>
     )

@@ -1,12 +1,19 @@
 import { useState } from 'react'
 import './App.css'
 import Task from './components/Task'
+//import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
+import lightImg from "./assets/day.png"
+import nightImg from "./assets/night.png"
 
 function App() {
 
+
   const [tasks, setTasks] = useState([])
 
-  function CreateTask() {
+  const [lightMode, setLightMode] = useState([false])
+
+  function handleCreate() {
     const title = document.getElementById('titleInput').value;
 
     if (title.trim() !== '') {
@@ -14,20 +21,23 @@ function App() {
     }
   }
 
-  function DeleteTasks(){
+  function handleDelete(){
     setTasks((prevTasks) => prevTasks.filter((task) => !task.finished));
+  }
 
+  function handleMode(){
+    setLightMode(!lightMode);
   }
 
   return (
     <>
-      <div className="task-list" id="taskList">
-        <h1 className='bigTitle'>Tasks</h1>
-
+      <div className={`task-list ${lightMode? "": "light"}`} id="taskList">
+        <h1 className={`bigTitle ${lightMode? "": "light"}`}>Tasks</h1>
+        <button onClick={handleMode} className='modeBtn'><img src={lightMode? lightImg:nightImg}></img></button>
         <div className='controls'>
           <p className='auxText'>Describe your task</p>
           <input type="text" id="titleInput"/>
-          <button className='taskBtn' onClick={CreateTask}>Add task</button>
+          <button className='taskBtn' onClick={handleCreate}>Add task</button>
 
         </div>
 
@@ -37,6 +47,7 @@ function App() {
               <Task
                 key={index}
                 title={task.title}
+                lightMode={lightMode}
                 finished={task.finished}
                 setFinished={(value) =>
                   setTasks((prevTasks) =>
@@ -49,8 +60,11 @@ function App() {
             ))}
             {tasks.length == 0 && <p className='waitTxt'><i>Waiting for tasks...</i></p>}
         </div>
-        <button className='taskBtn deleteBtn' onClick={DeleteTasks}>Delete completed task</button>
-
+        <div className='bottomControls'>
+          <button className='taskBtn deleteBtn' onClick={handleDelete}>Delete completed task</button>
+          <p className={`txt ${lightMode? "": "light"}`}>Left: <i className='numberLeft'>x{tasks.filter((task) => !task.finished).length}</i></p>
+                
+        </div>
       </div>
     </>
   )
@@ -59,11 +73,11 @@ function App() {
 export default App
 
 
-/////// FUNCIONALIDADES ///////
-// Ver tareas
-// Añadir tarea (botón)
-// Marcar como terminada
-// Quitar tarea (botón)
 
 ///// Extras
 // Cita motivadora random
+// Ordenar 
+// Urgencia
+// Guardar en localstorage
+// Contador tareas pendientes
+// Tiempo aprox tarea

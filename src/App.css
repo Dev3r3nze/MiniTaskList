@@ -13,18 +13,45 @@ body {
 .task-list {
   width: 400px;
   height: 600px;
-  background-color: #f0f0f0;
+  background-color: #282828;
   overflow: auto;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: 1px solid #ccc;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 20px;
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+.modeBtn{
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgb(69, 69, 69);
+  background-color: #b5b5b5;
+  border-radius: 20px;
+}
+.modeBtn:hover{
+  background-color: #767676;
+  transition: all 0.25s;
+}
+.modeBtn img{
+  width: 70%;
+}
+
+.light{
+  background-color: #f0f0f0;
+  color: rgb(38, 38, 38) !important;
 }
 
 .taskBtn{
@@ -34,14 +61,14 @@ body {
 
 .deleteBtn{
   font-size: 0.9em;
-  background-color: #1d1d1d;
+  margin-bottom: 0;
 }
 
 .taskTittle,.bigTitle{
-  color: rgb(38, 38, 38);
+  color: #ccc;
 }
 .bigTitle{
-  margin: 0.2em 0;
+  margin: 0.3em 0;
 }
 .waitTxt{
   color: rgb(151, 151, 151);
@@ -66,6 +93,7 @@ body {
 
 .taskContainer{
   width: 80%;
+  height: 40%;
   overflow: auto;
   border: 1px solid rgb(69, 69, 69);
   border-radius: 20px;
@@ -89,4 +117,17 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.bottomControls{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.txt{
+
+}
+.numberLeft{
+  font-size: 1.1em;
 }
