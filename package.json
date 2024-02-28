@@ -1,21 +1,22 @@
 {
   "name": "minitasklist",
-  "homepage": "https://dev3r3nze.github.io/MiniTaskList/",
+  "homepage": "https://dev3r3nze.github.io/minitasklist",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "predeploy": "npm run build", 
-    "deploy": "gh-pages -d build", 
+    "predeploy": "npm run build",
+    "deploy": "vite build && gh-pages -d dist",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
