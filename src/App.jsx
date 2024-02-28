@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import { v4 as uuidv4 } from 'uuid' // importa uuid
 import lightImg from "./assets/day.png"
 import nightImg from "./assets/night.png"
-import React, { useRef } from 'react'
+import  { useRef } from 'react'
 
 
 function App() {
@@ -28,11 +28,11 @@ function App() {
     // Puedes hacer algo más con la referencia si es necesario
   }
   // Función para activar Picture-in-Picture
-  const enterPiPMode = () => {
-    if (taskListRef.current) {
-      taskListRef.current.requestPictureInPicture()
-    }
-  }
+  // const enterPiPMode = () => {
+  //   if (taskListRef.current) {
+  //     taskListRef.current.requestPictureInPicture()
+  //   }
+  // }
 
   function handleCreate() {
     const input = document.getElementById("titleInput")

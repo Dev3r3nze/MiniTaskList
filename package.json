@@ -2,7 +2,7 @@
   "name": "minitasklist",
   "homepage": "https://dev3r3nze.github.io/minitasklist",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
