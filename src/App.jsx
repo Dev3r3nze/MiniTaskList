@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 import { v4 as uuidv4 } from 'uuid' // importa uuid
 import lightImg from "./assets/day.png"
 import nightImg from "./assets/night.png"
-import  { useRef } from 'react'
+// import  { useRef } from 'react'
 
 
 function App() {
@@ -21,12 +21,12 @@ function App() {
   }, [])
 
 
-  const taskListRef = useRef(null)
-  // Función para almacenar la referencia original y activar Picture-in-Picture
-  const setTaskListRef = (ref) => {
-    taskListRef.current = ref
-    // Puedes hacer algo más con la referencia si es necesario
-  }
+  // const taskListRef = useRef(null)
+  // // Función para almacenar la referencia original y activar Picture-in-Picture
+  // const setTaskListRef = (ref) => {
+  //   taskListRef.current = ref
+  //   // Puedes hacer algo más con la referencia si es necesario
+  // }
   // Función para activar Picture-in-Picture
   // const enterPiPMode = () => {
   //   if (taskListRef.current) {
@@ -54,15 +54,30 @@ function App() {
 
   function handleSpacer() {
     const input = document.getElementById("titleInput")
-    const title = input.value
+    const totalLenght = 38; // o 35 si input.value tiene una longitud impar
+    // Calcular la cantidad de caracteres "━" que se deben agregar en cada lado
+    const addChars = Math.floor((totalLenght - input.value.length - 6) / 2);
+    // Construir el título con los caracteres "━" adicionales
+    const title = `┏${"━".repeat(addChars)} ${input.value} ${"━".repeat(addChars)}┓`;
+
+    var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    console.log(title.split("").length)
+    if(title.split("").length == 35){
+      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+      
+    }
+
     input.value = ""
     const taskId = uuidv4()
+    const taskIdSub = uuidv4()
+    const newTitle = { id: taskId, title, finished: false, istitle: true }
+    const newSubTitle = { id: taskIdSub, title: subTitle, finished: false, istitle: true }
 
-    if (title.trim() !== "") {
-      setTasks((prevTasks) => [
-        ...prevTasks,
-        { id: taskId, title, finished: false, istitle: true },
-      ])
+    if (title !== "┏━━━━━━  ━━━━━━┓") {
+      setTasks((prevTasks) => [...prevTasks, newTitle]);
+      setTasks((prevTasks) => [...prevTasks, newSubTitle]);
+      localStorage.setItem("tasks", JSON.stringify([...tasks, newTitle,newSubTitle ]));
+
     }
   }
 
@@ -75,6 +90,8 @@ function App() {
   
       return newTasks
     })
+
+    
   }
 
   function handleMode() {
@@ -101,7 +118,7 @@ function App() {
 
           <div className={`task-list ${lightMode ? "" : "light"}`}  {...provided.droppableProps} id="taskList" ref={(el) => {
             // Almacena la referencia original y la proporciona a la biblioteca de arrastre
-            setTaskListRef(el)
+            // setTaskListRef(el)
             provided.innerRef(el)
           }}>
             {/* <button onClick={enterPiPMode}>PiP</button> */}
@@ -129,6 +146,7 @@ function App() {
             <div className="taskContainer">
               {tasks.length > 0 &&
                 tasks.map((task, index) => (
+
                   <Draggable key={task.id} draggableId={task.id} index={index}>
                     {(provided, snapshot) => (
                       <div
@@ -142,6 +160,7 @@ function App() {
                           left: snapshot.isDragging ? '' : provided.draggableProps.style.left
                         }}
                       >
+
                         <Task
                           style={snapshot.isDragging && "position:absolute !important"}
                           key={index}
