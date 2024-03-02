@@ -25,7 +25,6 @@ body {
   align-items: center;
   flex-direction: column;
 }
-
 .modeBtn {
   position: fixed;
   top: 10px;
@@ -72,6 +71,13 @@ body {
   color: #ccc;
   user-select: none;
 }
+.task {
+  width: 90%;
+}
+.taskTitle {
+  width: 100%;
+}
+
 .bigTitle {
   margin: 0.3em 0;
 }
@@ -106,6 +112,12 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 1em;
   margin-bottom: 1em;
+  display: flex;
+  flex-direction: column;
+}
+.taskDiv {
+  display: flex;
+  justify-content: center;
 }
 .miniTaskContainer {
   height: 13%;
@@ -115,9 +127,8 @@ body {
   justify-content: center;
 }
 
-label{
+label {
   font-family: "Monaco", monospace;
-
 }
 
 #titleInput {

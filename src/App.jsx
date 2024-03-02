@@ -61,24 +61,24 @@ function App() {
     const title = `┏${"━".repeat(addChars)} ${input.value} ${"━".repeat(addChars)}┓`;
 
     var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
-    console.log(title.split("").length)
     if(title.split("").length == 35){
       subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
       
     }
 
-    input.value = ""
     const taskId = uuidv4()
     const taskIdSub = uuidv4()
     const newTitle = { id: taskId, title, finished: false, istitle: true }
     const newSubTitle = { id: taskIdSub, title: subTitle, finished: false, istitle: true }
 
-    if (title !== "┏━━━━━━  ━━━━━━┓") {
+    if (input.value !== "") {
       setTasks((prevTasks) => [...prevTasks, newTitle]);
       setTasks((prevTasks) => [...prevTasks, newSubTitle]);
       localStorage.setItem("tasks", JSON.stringify([...tasks, newTitle,newSubTitle ]));
 
     }
+    input.value = ""
+
   }
 
   function handleDelete() {
@@ -109,6 +109,8 @@ function App() {
     reorderedTasks.splice(result.destination.index, 0, removed)
 
     setTasks(reorderedTasks)
+    localStorage.setItem("tasks", JSON.stringify(reorderedTasks))
+
   }
 
   return (
@@ -156,9 +158,10 @@ function App() {
                         style={{
                           ...provided.draggableProps.style,
                           // Agrega un estilo para evitar la transformación durante el arrastre
-                          top: snapshot.isDragging ? '' : provided.draggableProps.style.top,
-                          left: snapshot.isDragging ? '' : provided.draggableProps.style.left
+                          top: snapshot.isDragging ? provided.draggableProps.style.top-180 : "",
+                          left: snapshot.isDragging ? '' : provided.draggableProps.style.left,
                         }}
+                        className="taskDiv"
                       >
 
                         <Task
@@ -177,7 +180,7 @@ function App() {
                             )
                           }
                         />
-                        
+                        {}
                       </div>
                     )}
                   </Draggable>
