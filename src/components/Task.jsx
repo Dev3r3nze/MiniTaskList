@@ -1,12 +1,8 @@
 /* eslint-disable react/prop-types */
-
 export default function Task({title, finished, setFinished,lightMode,isTitle}) {
-
-
+    
     function handleChangeFinished(){
         setFinished(!finished)
-
-        // Si es title busaca subtitle correspondiente
     }
 
     return (

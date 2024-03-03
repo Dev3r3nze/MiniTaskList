@@ -9,26 +9,35 @@ body {
   margin: 0;
   overflow: hidden;
 }
+h2{
+  font-size: 2.5em;
+}
 
-.task-list {
+.task-list,.pomodoroContainer {
   width: 400px;
-  height: 80%;
+  height: 60vh;
   background-color: #282828;
   overflow: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /* position: absolute; */
+  /* transform: translate(-50%, -50%); */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   border-radius: 20px;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
-.modeBtn {
-  position: fixed;
-  top: 10px;
-  right: 10px;
+.headerDiv{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-around;
+}
+.pomodoroContainer{
+  margin-top: 2em;
+  position: inherit;
+  height: auto;
+}
+.modeBtn, .maxScreenBtn {
   width: 40px;
   height: 40px;
   padding: 0;
@@ -40,6 +49,8 @@ body {
   background-color: #b5b5b5;
   border-radius: 20px;
 }
+
+
 .spacerBtn {
   margin-left: 1em;
 }
@@ -49,6 +60,9 @@ body {
 }
 .modeBtn img {
   width: 70%;
+}
+.maxScreenBtn img{
+  width: 60%;
 }
 
 .light {
@@ -154,4 +168,39 @@ label {
 
 .numberLeft {
   font-size: 1.1em;
+}
+
+
+ /* Timer */
+.timers{
+  display: flex;
+  width: 100%;
+  margin: 0.3em 0
+}
+.timerContainer{
+  width: 100%;
+}
+.timerTitle{
+  
+}
+.timerTime{
+  font-size: 35px;
+  margin: 0;
+}
+.timerControls{
+  display: flex;
+  width: 90%;
+  justify-content: center;
+}
+.timerBtn{
+  margin: 1em;
+}
+
+.timerHeader{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.timerOptBtn img {
+  width: 70%
 }

@@ -1,25 +1,26 @@
-import { useState,useEffect } from "react"
+import { useState, useEffect } from "react"
 import "./App.css"
 import Task from "./components/Task"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
-import { v4 as uuidv4 } from 'uuid' // importa uuid
+import { v4 as uuidv4 } from "uuid" // importa uuid
 import lightImg from "./assets/day.png"
 import nightImg from "./assets/night.png"
+import screenSizeImg from "./assets/screenSize.png"
+import Pomodoro from "./components/Pomodoro"
 // import  { useRef } from 'react'
-
 
 function App() {
   const [tasks, setTasks] = useState([])
   const [lightMode, setLightMode] = useState([false])
+  var fullScreen = false
 
   // var mainTask
 
   useEffect(() => {
     // Recuperar tareas almacenadas en localStorage al iniciar la aplicación
-    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    setTasks(storedTasks);
+    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || []
+    setTasks(storedTasks)
   }, [])
-
 
   // const taskListRef = useRef(null)
   // // Función para almacenar la referencia original y activar Picture-in-Picture
@@ -38,60 +39,49 @@ function App() {
     const input = document.getElementById("titleInput")
     const title = input.value
     input.value = ""
-
     const taskId = uuidv4()
-
     const newTask = { id: taskId, title, finished: false, istitle: false }
-
-
     if (title.trim() !== "") {
-      setTasks((prevTasks) => [...prevTasks, newTask]);
-      localStorage.setItem("tasks", JSON.stringify([...tasks, newTask]));
+      setTasks((prevTasks) => [...prevTasks, newTask])
+      localStorage.setItem("tasks", JSON.stringify([...tasks, newTask]))
     }
-
   }
-
 
   function handleSpacer() {
     const input = document.getElementById("titleInput")
-    const totalLenght = 38; // o 35 si input.value tiene una longitud impar
+    const totalLenght = 38
     // Calcular la cantidad de caracteres "━" que se deben agregar en cada lado
-    const addChars = Math.floor((totalLenght - input.value.length - 6) / 2);
+    const addChars = Math.floor((totalLenght - input.value.length - 6) / 2)
     // Construir el título con los caracteres "━" adicionales
-    const title = `┏${"━".repeat(addChars)} ${input.value} ${"━".repeat(addChars)}┓`;
-
+    const title = `┏${"━".repeat(addChars)} ${input.value} ${"━".repeat(addChars)}┓`
     var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
-    if(title.split("").length == 35){
+    if (title.split("").length == 35) {
       subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
-      
     }
 
     const taskId = uuidv4()
-    const taskIdSub = uuidv4()
+    const taskIdSub = `Sub${taskId}`
     const newTitle = { id: taskId, title, finished: false, istitle: true }
-    const newSubTitle = { id: taskIdSub, title: subTitle, finished: false, istitle: true }
+    const newSubTitle = {id: taskIdSub, title: subTitle, finished: false, istitle: true}
 
     if (input.value !== "") {
-      setTasks((prevTasks) => [...prevTasks, newTitle]);
-      setTasks((prevTasks) => [...prevTasks, newSubTitle]);
-      localStorage.setItem("tasks", JSON.stringify([...tasks, newTitle,newSubTitle ]));
-
+      setTasks((prevTasks) => [...prevTasks, newTitle])
+      setTasks((prevTasks) => [...prevTasks, newSubTitle])
+      localStorage.setItem("tasks",JSON.stringify([...tasks, newTitle, newSubTitle]))
     }
     input.value = ""
-
   }
 
   function handleDelete() {
     setTasks((prevTasks) => {
       const newTasks = prevTasks.filter((task) => !task.finished)
-  
+
+
+
       // Guardar las tareas actualizadas en localStorage
       localStorage.setItem("tasks", JSON.stringify(newTasks))
-  
       return newTasks
     })
-
-    
   }
 
   function handleMode() {
@@ -110,30 +100,63 @@ function App() {
 
     setTasks(reorderedTasks)
     localStorage.setItem("tasks", JSON.stringify(reorderedTasks))
+  }
 
+  function handleScreenSize() {
+    const element = document.documentElement
+
+    fullScreen = !fullScreen
+
+    if (fullScreen) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen()
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen()
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen()
+      }
+    }
   }
 
   return (
+    <>
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="tasks" direction="vertical">
         {(provided) => (
-
-          <div className={`task-list ${lightMode ? "" : "light"}`}  {...provided.droppableProps} id="taskList" ref={(el) => {
-            // Almacena la referencia original y la proporciona a la biblioteca de arrastre
-            // setTaskListRef(el)
-            provided.innerRef(el)
-          }}>
+          <div
+            className={`task-list ${lightMode ? "" : "light"}`}
+            {...provided.droppableProps}
+            id="taskList"
+            ref={(el) => {
+              // Almacena la referencia original y la proporciona a la biblioteca de arrastre
+              // setTaskListRef(el)
+              provided.innerRef(el)
+            }}
+          >
             {/* <button onClick={enterPiPMode}>PiP</button> */}
-            <h1 className={`bigTitle ${lightMode ? "" : "light"}`}>Tasks</h1>
-            <button onClick={handleMode} className="modeBtn">
-              <img src={lightMode ? lightImg : nightImg}></img>
-            </button>
+            <div className="headerDiv">
+            <button onClick={handleScreenSize} className="modeBtn maxScreenBtn">
+                <img src={screenSizeImg}></img>
+              </button>
+              <h1 className={`bigTitle ${lightMode ? "" : "light"}`}>Tasks</h1>
+              <button onClick={handleMode} className="modeBtn">
+                <img src={lightMode ? lightImg : nightImg}></img>
+              </button>
+            </div>
             <div className="controls">
               <p className="auxText">Describe your task</p>
               <form action="" onSubmit={handleSubmit}>
                 <input type="text" id="titleInput" />
-                <button className="taskBtn" onClick={handleCreate}>Add task</button>
-                <button className="spacerBtn" onClick={handleSpacer}>Add title</button>
+                <button className="taskBtn" onClick={handleCreate}>
+                  Add task
+                </button>
+                <button className="spacerBtn" onClick={handleSpacer}>
+                  Add title
+                </button>
               </form>
             </div>
 
@@ -148,24 +171,20 @@ function App() {
             <div className="taskContainer">
               {tasks.length > 0 &&
                 tasks.map((task, index) => (
-
                   <Draggable key={task.id} draggableId={task.id} index={index}>
                     {(provided, snapshot) => (
                       <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        style={{
-                          ...provided.draggableProps.style,
-                          // Agrega un estilo para evitar la transformación durante el arrastre
-                          top: snapshot.isDragging ? provided.draggableProps.style.top-180 : "",
-                          left: snapshot.isDragging ? '' : provided.draggableProps.style.left,
-                        }}
+                        
                         className="taskDiv"
                       >
-
                         <Task
-                          style={snapshot.isDragging && "position:absolute !important"}
+                          style={
+                            snapshot.isDragging &&
+                            "position:absolute !important"
+                          }
                           key={index}
                           title={task.title}
                           lightMode={lightMode}
@@ -212,6 +231,8 @@ function App() {
         )}
       </Droppable>
     </DragDropContext>
+    <Pomodoro lightMode={lightMode}/>
+    </>
   )
 }
 
