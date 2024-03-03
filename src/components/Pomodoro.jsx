@@ -9,8 +9,8 @@ import Sound2 from "./../assets/Sound2.flac"
 
 export default function Pomodoro ({lightMode}){
 
-    var brkInitialMin = 25
-    var pomInitialMin = 5
+    var brkInitialMin = 5
+    var pomInitialMin = 25
 
     const [pomTimerMin, setPomTimerMin] = useState(pomInitialMin)
     const [pomTimerSec, setPomTimerSec] = useState(0)
