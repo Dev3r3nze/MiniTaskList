@@ -20,8 +20,11 @@ export default function Pomodoro ({lightMode}){
     const [isTimerActive, setIsTimerActive] = useState(false)
 
     const [mute, setMute] = useState(false)
+    const [showControls, setShowControls] = useState(false)
 
     const [currentSound,setCurrentSound] = useState(Sound2)
+    const [vol, setVol] = useState(1)
+    var audio = new Audio(currentSound)
 
     const changeTimer = () => {
         setIsTimerActive(!isTimerActive)
@@ -67,17 +70,11 @@ export default function Pomodoro ({lightMode}){
         return () => clearInterval(interval)
       }, [isBreak, pomTimerMin, pomTimerSec, brkTimerMin, brkTimerSec, isTimerActive])
 
-        function playSound() {
-        // Crea una instancia de la clase Audio y proporciona la URL del archivo de sonido
-        const audio = new Audio(currentSound);
-        // Reproduce el sonido
-        if(!mute){
-            audio.play();
-        }
-    }
-
     function handleMute(){
         setMute(!mute)
+    }
+    function showControlsFct(){
+      setShowControls(!showControls)
     }
     function changeSound(){
         if(currentSound == Sound2) {
@@ -86,9 +83,16 @@ export default function Pomodoro ({lightMode}){
         if(currentSound == Sound1) {
             setCurrentSound(Sound2)
         }
-        const audio = new Audio(currentSound);
-        audio.play();
-
+    }
+    function handleVolume(){
+      setVol(document.getElementById("vol").value*0.01)
+    }
+    function playSound(){
+      if(!mute){
+        audio = new Audio(currentSound)
+        audio.volume = vol
+        audio.play()
+      }
     }
 
     return (
@@ -100,9 +104,15 @@ export default function Pomodoro ({lightMode}){
                         <img src={mute? Sound:Mute} onClick={handleMute}></img>
                     </button>
                     <h2 className={`bigTitle ${lightMode ? "" : "light"}`}>{isTimerActive?isBreak? "Break":"Work!":"Timer"}</h2>
-                    <button className='timerOptBtn modeBtn' onClick={changeSound}>
+                    <button className='timerOptBtn modeBtn' onClick={showControlsFct}>
                         <img src={Config}></img>
                     </button>
+                    {showControls && <div className='controlsDiv'>
+                      <input type="range" id="vol" min="0" max="100" onMouseUp={playSound}  onChange={handleVolume}/>
+                      <button onClick={changeSound} className='modeBtn changeSoundBtn'>
+                        <p>{currentSound == Sound1?1:2}</p>
+                      </button>
+                      </div>}
                 </div>
                 <p className='timerTime'>
                     {isBreak? `${brkTimerMin.toString().padStart(2, '0')}:${brkTimerSec.toString().padStart(2, '0')}`:`${pomTimerMin.toString().padStart(2, '0')}:${pomTimerSec.toString().padStart(2, '0')}`}

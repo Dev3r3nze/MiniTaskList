@@ -144,6 +144,9 @@ h2{
 label {
   font-family: "Monaco", monospace;
 }
+p{
+  color: #ccc;
+}
 
 #titleInput {
   border-radius: 5px;
@@ -203,4 +206,10 @@ label {
 }
 .timerOptBtn img {
   width: 70%
+}
+.controlsDiv{
+  display: flex;
+}
+.changeSoundBtn p {
+  color: #242424;
 }

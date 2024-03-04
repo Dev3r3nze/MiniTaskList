@@ -6,13 +6,14 @@ import { v4 as uuidv4 } from "uuid" // importa uuid
 import lightImg from "./assets/day.png"
 import nightImg from "./assets/night.png"
 import screenSizeImg from "./assets/screenSize.png"
+import miniScreenSizeImg from "./assets/min.png"
 import Pomodoro from "./components/Pomodoro"
 // import  { useRef } from 'react'
 
 function App() {
   const [tasks, setTasks] = useState([])
   const [lightMode, setLightMode] = useState([false])
-  var fullScreen = false
+  const [fullScreen, setFullScreen] = useState(false)
 
   // var mainTask
 
@@ -49,13 +50,13 @@ function App() {
 
   function handleSpacer() {
     const input = document.getElementById("titleInput")
-    const totalLenght = 38
+    const totalLenght = 35
     // Calcular la cantidad de caracteres "━" que se deben agregar en cada lado
     const addChars = Math.floor((totalLenght - input.value.length - 6) / 2)
     // Construir el título con los caracteres "━" adicionales
     const title = `┏${"━".repeat(addChars)} ${input.value} ${"━".repeat(addChars)}┓`
     var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
-    if (title.split("").length == 35) {
+    if (title.split("").length == 32) {
       subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     }
 
@@ -105,9 +106,9 @@ function App() {
   function handleScreenSize() {
     const element = document.documentElement
 
-    fullScreen = !fullScreen
+    setFullScreen(!fullScreen)
 
-    if (fullScreen) {
+    if (!fullScreen) {
       if (element.requestFullscreen) {
         element.requestFullscreen()
       } else if (element.webkitRequestFullscreen) {
@@ -140,7 +141,7 @@ function App() {
             {/* <button onClick={enterPiPMode}>PiP</button> */}
             <div className="headerDiv">
             <button onClick={handleScreenSize} className="modeBtn maxScreenBtn">
-                <img src={screenSizeImg}></img>
+                <img src={fullScreen?miniScreenSizeImg:screenSizeImg}></img>
               </button>
               <h1 className={`bigTitle ${lightMode ? "" : "light"}`}>Tasks</h1>
               <button onClick={handleMode} className="modeBtn">
