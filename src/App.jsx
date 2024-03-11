@@ -14,6 +14,7 @@ function App() {
   const [tasks, setTasks] = useState([])
   const [lightMode, setLightMode] = useState([false])
   const [fullScreen, setFullScreen] = useState(false)
+  const [showPomodoro, setShowPomodoro] = useState(true)
 
   // var mainTask
 
@@ -55,9 +56,9 @@ function App() {
     const addChars = Math.floor((totalLenght - input.value.length - 6) / 2)
     // Construir el título con los caracteres "━" adicionales
     const title = `┏${"━".repeat(addChars)} ${input.value} ${"━".repeat(addChars)}┓`
-    var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     if (title.split("").length == 32) {
-      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     }
 
     const taskId = uuidv4()
@@ -121,6 +122,9 @@ function App() {
         document.webkitExitFullscreen()
       }
     }
+  }
+  function handleShowPomodoro(){
+    setShowPomodoro(!showPomodoro)
   }
 
   return (
@@ -232,7 +236,16 @@ function App() {
         )}
       </Droppable>
     </DragDropContext>
-    <Pomodoro lightMode={lightMode}/>
+    <div className="showPomodoroDiv">
+      <p className="auxText">Show pomodoro</p>
+      {/* <input type="range" max="1" min="0" step="1" onChange={handleShowPomodoro}/> */}
+      <div className="button r" id="button-1">
+          <input type="checkbox" className="checkbox" onChange={handleShowPomodoro} />
+          <div className="knobs"></div>
+          <div className="layer"></div>
+        </div>
+    </div>
+    {showPomodoro&&<Pomodoro lightMode={lightMode}/>}
     </>
   )
 }
