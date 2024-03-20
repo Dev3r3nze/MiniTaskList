@@ -1,6 +1,9 @@
 # Mini Task List
 To-do app minimalista y sencilla
 
+## Cómo usarlo
+Simplemente accede al [enlace](https://dev3r3nze.github.io/MiniTaskList/)
+
 ## Tecnologías utilizadas
 - React
 - Vite
@@ -14,9 +17,12 @@ To-do app minimalista y sencilla
 - Contador de tareas pendientes de completar
 - Modo claro/oscuro
 - Las tareas se guardan
+- Pomodoro integrado
+- Pomodoro con sonido
+- Pomodoro con sonido ajustable y cambio de tono entre 2 preestablecidos
 
 ## Uso
 Añades la tarea y al realizarla la marcas como terminada.
 
 ### Estado del proyecto
-En desarrollo...
+En continua mejora...
