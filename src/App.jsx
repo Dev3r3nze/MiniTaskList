@@ -58,7 +58,7 @@ function App() {
     const title = `┏${"━".repeat(addChars)} ${input.value} ${"━".repeat(addChars)}┓`
     var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     if (title.split("").length == 32) {
-      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     }
 
     const taskId = uuidv4()
