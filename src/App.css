@@ -12,6 +12,9 @@ body {
 h2{
   font-size: 2.5em;
 }
+del{
+  opacity: 0.5
+}
 
 .task-list,.pomodoroContainer {
   height: 60vh;
