@@ -56,9 +56,9 @@ function App() {
     const addChars = Math.floor((totalLenght - input.value.length - 6) / 2)
     // Construir el título con los caracteres "━" adicionales
     const title = `┏${"━".repeat(addChars)} ${input.value} ${"━".repeat(addChars)}┓`
-    var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     if (title.split("").length == 32) {
-      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     }
 
     const taskId = uuidv4()
