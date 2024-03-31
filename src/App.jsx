@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect,useRef } from "react"
 import "./App.css"
 import Task from "./components/Task"
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
@@ -7,6 +7,7 @@ import lightImg from "./assets/day.png"
 import nightImg from "./assets/night.png"
 import screenSizeImg from "./assets/screenSize.png"
 import miniScreenSizeImg from "./assets/min.png"
+import changeBckImg from "./assets/bckimgChange.png"
 import Pomodoro from "./components/Pomodoro"
 // import  { useRef } from 'react'
 
@@ -15,6 +16,9 @@ function App() {
   const [lightMode, setLightMode] = useState([false])
   const [fullScreen, setFullScreen] = useState(false)
   const [showPomodoro, setShowPomodoro] = useState(true)
+
+  const inputRef = useRef(null);
+
 
   // var mainTask
 
@@ -126,6 +130,21 @@ function App() {
   function handleShowPomodoro(){
     setShowPomodoro(!showPomodoro)
   }
+
+  const handleCambiarImagen = () => {
+    inputRef.current.click();
+  };
+
+  const handleSeleccionarImagen = (event) => {
+    const archivo = event.target.files[0];
+    const lector = new FileReader();
+
+    lector.onload = function () {
+      document.getElementById('bckImg').style.backgroundImage = `url(${lector.result})`;
+    };
+
+    lector.readAsDataURL(archivo);
+  };
 
   return (
     <>
@@ -246,6 +265,11 @@ function App() {
         </div>
     </div>
     {showPomodoro&&<Pomodoro lightMode={lightMode}/>}
+    <button id="boton" className="modeBtn" onClick={handleCambiarImagen}>
+      <img src={changeBckImg}></img>
+    </button>
+    <input type="file" id="input-imagen" ref={inputRef} style={{ display: 'none' }} accept="image/*" onChange={handleSeleccionarImagen} />
+    
     </>
   )
 }
