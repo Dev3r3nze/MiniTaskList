@@ -20,6 +20,7 @@ Simplemente accede al [enlace](https://dev3r3nze.github.io/MiniTaskList/)
 - Pomodoro integrado
 - Pomodoro con sonido
 - Pomodoro con sonido ajustable y cambio de tono entre 2 preestablecidos
+- Cambiar fondo de pantalla (soporta GIFs)
 
 ## Uso
 Añades la tarea y al realizarla la marcas como terminada.
