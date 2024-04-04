@@ -16,6 +16,7 @@ function App() {
   const [lightMode, setLightMode] = useState([false])
   const [fullScreen, setFullScreen] = useState(false)
   const [showPomodoro, setShowPomodoro] = useState(true)
+  const [showPlaylist, setShowPlaylist] = useState(true)
 
   const inputRef = useRef(null);
 
@@ -131,6 +132,9 @@ function App() {
   }
   function handleShowPomodoro(){
     setShowPomodoro(!showPomodoro)
+  }
+  function handleShowPlaylist(){
+    setShowPlaylist(!showPlaylist)
   }
 
   const handleCambiarImagen = () => {
@@ -273,7 +277,18 @@ function App() {
       <img src={changeBckImg}></img>
     </button>
     <input type="file" id="input-imagen" ref={inputRef} style={{ display: 'none' }} accept="image/*" onChange={handleSeleccionarImagen} />
-    
+    <div className="playlist">
+      <div className="showPomodoroDiv">
+        <p className="auxText">Show playlist</p>
+        {/* <input type="range" max="1" min="0" step="1" onChange={handleShowPomodoro}/> */}
+        <div className="button r" id="button-1">
+            <input type="checkbox" className="checkbox" onChange={handleShowPlaylist} />
+            <div className="knobs"></div>
+            <div className="layer"></div>
+        </div>
+      </div>
+      {showPlaylist && <iframe src="https://open.spotify.com/embed/playlist/7rqqfKLjwoH9PDWn5uC2RR?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>}
+    </div>
     </>
   )
 }
