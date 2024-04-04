@@ -25,6 +25,8 @@ function App() {
   useEffect(() => {
     // Recuperar tareas almacenadas en localStorage al iniciar la aplicación
     const storedTasks = JSON.parse(localStorage.getItem("tasks")) || []
+    const lastBackground = localStorage.getItem("backImg");
+    document.getElementById('bckImg').style.backgroundImage = lastBackground;
     setTasks(storedTasks)
   }, [])
 
@@ -140,12 +142,14 @@ function App() {
     const lector = new FileReader();
 
     lector.onload = function () {
-      document.getElementById('bckImg').style.backgroundImage = `url(${lector.result})`;
+      const newBackground = `url(${lector.result})`
+      document.getElementById('bckImg').style.backgroundImage = newBackground;
+      localStorage.setItem("backImg",newBackground)
+
     };
 
     lector.readAsDataURL(archivo);
-  };
-
+  }
   return (
     <>
     <DragDropContext onDragEnd={handleDragEnd}>
