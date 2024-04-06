@@ -16,7 +16,7 @@ function App() {
   const [lightMode, setLightMode] = useState([false])
   const [fullScreen, setFullScreen] = useState(false)
   const [showPomodoro, setShowPomodoro] = useState(true)
-  const [showPlaylist, setShowPlaylist] = useState(true)
+  const [showPlaylist, setShowPlaylist] = useState(false)
 
   const inputRef = useRef(null);
 
@@ -58,14 +58,14 @@ function App() {
 
   function handleSpacer() {
     const input = document.getElementById("titleInput")
-    const totalLenght = 35
+    const totalLenght = 40
     // Calcular la cantidad de caracteres "━" que se deben agregar en cada lado
     const addChars = Math.floor((totalLenght - input.value.length - 6) / 2)
     // Construir el título con los caracteres "━" adicionales
     const title = `┏${"━".repeat(addChars)} ${input.value} ${"━".repeat(addChars)}┓`
-    var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
-    if (title.split("").length == 32) {
-      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    if (title.split("").length % 2 == 0) {
+      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
     }
 
     const taskId = uuidv4()
