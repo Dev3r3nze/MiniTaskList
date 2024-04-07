@@ -56,6 +56,9 @@ del{
   margin-top: 0.5rem;
 
 }
+.fullwidth{
+  max-width: none !important;
+}
 
 .task-list,.pomodoroContainer {
   height: 60vh;

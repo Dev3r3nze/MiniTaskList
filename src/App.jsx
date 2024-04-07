@@ -278,7 +278,7 @@ function App() {
     </button>
     <input type="file" id="input-imagen" ref={inputRef} style={{ display: 'none' }} accept="image/*" onChange={handleSeleccionarImagen} />
     <div className="playlist">
-      <div className="showPomodoroDiv">
+      <div className="showPomodoroDiv fullwidth">
         <p className="auxText">Show playlist</p>
         {/* <input type="range" max="1" min="0" step="1" onChange={handleShowPomodoro}/> */}
         <div className="button r" id="button-1">
