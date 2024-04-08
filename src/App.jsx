@@ -183,6 +183,7 @@ function App() {
               <p className="auxText">Describe your task</p>
               <form action="" onSubmit={handleSubmit}>
                 <input type="text" id="titleInput" />
+                <br />
                 <button className="taskBtn" onClick={handleCreate}>
                   Add task
                 </button>
