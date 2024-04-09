@@ -29,6 +29,7 @@ function App() {
     const lastBackground = localStorage.getItem("backImg");
     document.getElementById('bckImg').style.backgroundImage = lastBackground;
     setTasks(storedTasks)
+    document.getElementById("showPlaylistCheck").checked = true
   }, [])
 
   // const taskListRef = useRef(null)
@@ -283,7 +284,7 @@ function App() {
         <p className="auxText">Show playlist</p>
         {/* <input type="range" max="1" min="0" step="1" onChange={handleShowPomodoro}/> */}
         <div className="button r" id="button-1">
-            <input type="checkbox" className="checkbox" onChange={handleShowPlaylist} />
+            <input type="checkbox" className="checkbox" id="showPlaylistCheck" onChange={handleShowPlaylist} />
             <div className="knobs"></div>
             <div className="layer"></div>
         </div>
