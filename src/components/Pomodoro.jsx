@@ -65,6 +65,9 @@ export default function Pomodoro ({lightMode}){
               setBrkTimerSec((prev) => prev - 1) // Utiliza el callback para asegurar que tienes el valor más reciente
             }
           }
+          if(isBreak && isTimerActive) document.title = `${brkTimerMin.toString().padStart(2, '0')}:${brkTimerSec.toString().padStart(2, '0')} - BREAK`;
+          else if(isTimerActive) document.title = `${pomTimerMin.toString().padStart(2, '0')}:${pomTimerSec.toString().padStart(2, '0')} - WORK`
+          else document.title = "Mini Task List"
         }, 1000)
       
         return () => clearInterval(interval)
