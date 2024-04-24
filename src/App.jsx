@@ -289,7 +289,7 @@ function App() {
             <div className="layer"></div>
         </div>
       </div>
-      {showPlaylist && <iframe src="https://open.spotify.com/embed/playlist/7rqqfKLjwoH9PDWn5uC2RR?utm_source=generator" width="100%" height="352" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>}
+      {showPlaylist && <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/0kJbt84YUcL53AH59mJ4qk?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>}
     </div>
     </>
   )
