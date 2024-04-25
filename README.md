@@ -18,7 +18,6 @@ Simplemente accede al [enlace](https://dev3r3nze.github.io/MiniTaskList/)
 - Modo claro/oscuro
 - Las tareas se guardan
 - Pomodoro integrado
-- Pomodoro con sonido
 - Pomodoro con sonido ajustable y cambio de tono entre 2 preestablecidos
 - Playlist integrada de spotify (se puede ocultar o mostrar)
 - Cambiar fondo de pantalla (se guarda)
