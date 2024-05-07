@@ -81,7 +81,7 @@ del{
 }
 .pomodoroContainer{
   margin-top: 1em;
-  position: inherit;
+  position: relative;
   height: auto;
   width: 80%;
 }
@@ -135,6 +135,7 @@ del{
 }
 .task {
   width: 75%;
+  margin: 0.1rem 0
 }
 .taskTitle {
   width: 100%;
@@ -226,10 +227,18 @@ p{
 .timers{
   display: flex;
   width: 100%;
-  margin: 0.3em 0
+  margin: 1em 0
 }
 .timerContainer{
   width: 100%;
+}
+.pomodoroModeTitle{
+  position: absolute;
+  top: 0;
+  color: #767676;
+}
+.pomodoroModeTitle:hover{
+  cursor: pointer;
 }
 
 .timerTime{
