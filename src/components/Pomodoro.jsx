@@ -9,7 +9,7 @@ import Sound2 from "./../assets/Sound2.flac"
 
 export default function Pomodoro ({lightMode}){
 
-    var brkInitialMin = 5
+    var brkInitialMin = 1
     var pomInitialMin = 25
 
     const [pomTimerMin, setPomTimerMin] = useState(pomInitialMin)
@@ -38,46 +38,53 @@ export default function Pomodoro ({lightMode}){
     }
     
 
-    const handleModeChange = () => {
-      if (!isTimerActive) {
-        setIsBreak(!isBreak);
-        // Reiniciar el temporizador según el modo actual
-        if (!isBreak) {
-          setPomTimerMin(pomInitialMin);
-          setPomTimerSec(0);
-        } else {
-          setBrkTimerMin(brkInitialMin);
-          setBrkTimerSec(0);
-        }
-      }
-    };
-    
     useEffect(() => {
       const interval = setInterval(() => {
-        if (isTimerActive) {
-          if (!isBreak && pomTimerSec === 0 && pomTimerMin !== 0) {
-            setPomTimerMin((prev) => prev - 1);
-            setPomTimerSec(59);
-          } else if (!isBreak && pomTimerMin === 0 && pomTimerSec === 0) {
-            handleModeChange();
-            playSound();
-          } else if (isBreak && brkTimerSec === 0 && brkTimerMin !== 0) {
-            setBrkTimerMin((prev) => prev - 1);
-            setBrkTimerSec(59);
-          } else if (isBreak && brkTimerMin === 0 && brkTimerSec === 0) {
-            handleModeChange();
-            playSound();
-          } else if (!isBreak) {
-            setPomTimerSec((prev) => prev - 1);
+        if (!isBreak && isTimerActive) {
+          if (pomTimerSec === 0 && pomTimerMin !== 0) {
+            setPomTimerMin((prev) => prev - 1)
+            setPomTimerSec(59)
+          } else if (pomTimerMin === 0 && pomTimerSec === 0) {
+            setIsBreak(true)
+            setBrkTimerMin(brkInitialMin)
+            setBrkTimerSec(0)
+            playSound()
           } else {
-            setBrkTimerSec((prev) => prev - 1);
+            setPomTimerSec((prev) => prev - 1) // Utiliza el callback para asegurar que tienes el valor más reciente
+          }
+        } else if (isBreak && isTimerActive) {
+          if (brkTimerSec === 0 && brkTimerMin !== 0) {
+            setBrkTimerMin((prev) => prev - 1)
+            setBrkTimerSec(59)
+          } else if (brkTimerMin === 0 && brkTimerSec == 0) {
+            setIsBreak(false)
+            setPomTimerMin(pomInitialMin)
+            setPomTimerSec(0)
+            playSound()
+          } else {
+            setBrkTimerSec((prev) => prev - 1) // Utiliza el callback para asegurar que tienes el valor más reciente
           }
         }
-      }, 1000);
+        if(isBreak && isTimerActive) document.title = `${brkTimerMin.toString().padStart(2, '0')}:${(brkTimerSec-1).toString().padStart(2, '0')} - BREAK`;
+        else if(isTimerActive) document.title = `${pomTimerMin.toString().padStart(2, '0')}:${(pomTimerSec-1).toString().padStart(2, '0')} - WORK`
+        else document.title = "Mini Task List"
+      }, 1000)
+
+      return () => clearInterval(interval)
+    }, [isBreak, pomTimerMin, pomTimerSec, brkTimerMin, brkTimerSec, isTimerActive]) 
     
-      return () => clearInterval(interval);
-    }, [isBreak, pomTimerMin, pomTimerSec, brkTimerMin, brkTimerSec, isTimerActive]);
-    
+    function changeMode(){
+      if(isBreak) {
+        setIsBreak(false)
+        setPomTimerMin(pomInitialMin)
+        setPomTimerSec(0)
+      }else{
+        setIsBreak(true)
+        setBrkTimerMin(brkInitialMin)
+        setBrkTimerSec(0)
+
+      }
+    }
 
     function handleMute(){
         setMute(!mute)
@@ -112,7 +119,7 @@ export default function Pomodoro ({lightMode}){
                     <button className='timerOptBtn modeBtn'>
                         <img src={mute? Sound:Mute} onClick={handleMute}></img>
                     </button>
-                    {!isTimerActive && <h3 className={`bigTitle pomodoroModeTitle ${lightMode ? "" : "light"}`} onClick={handleModeChange}>{"Change Pomodoro mode"}</h3>}
+                    {!isTimerActive && <h3 className={`bigTitle pomodoroModeTitle ${lightMode ? "" : "light"}`} onClick={changeMode}>{"Change Pomodoro mode"}</h3>}
                     <h2 className={`bigTitle ${lightMode ? "" : "light"}`}>{isBreak? "Break":"Work!"}</h2>
                     <button className='timerOptBtn modeBtn' onClick={showControlsFct}>
                         <img src={Config}></img>
