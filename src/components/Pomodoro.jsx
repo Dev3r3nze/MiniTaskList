@@ -18,6 +18,10 @@ export default function Pomodoro ({lightMode}){
     const [brkTimerSec, setBrkTimerSec] = useState(0)
     const [isBreak, setIsBreak] = useState(false)
     const [isTimerActive, setIsTimerActive] = useState(false)
+    const [isEditingPomTime, setIsEditingPomTime] = useState(false);
+    const [isEditingBrkTime, setIsEditingBrkTime] = useState(false);
+    const [editedPomTimerMin, setEditedPomTimerMin] = useState(pomInitialMin);
+    const [editedBrkTimerMin, setEditedBrkTimerMin] = useState(brkInitialMin);
 
     const [mute, setMute] = useState(false)
     const [showControls, setShowControls] = useState(false)
@@ -28,6 +32,9 @@ export default function Pomodoro ({lightMode}){
 
     const changeTimer = () => {
         setIsTimerActive(!isTimerActive)
+        setIsEditingPomTime(false);
+        setIsEditingBrkTime(false);
+
     }
     
     function resetTimer(){
@@ -36,6 +43,36 @@ export default function Pomodoro ({lightMode}){
         setBrkTimerSec(0)
         setPomTimerSec(0)
     }
+
+    const handlePomTimeClick = () => {
+      if (!isTimerActive) {
+        setIsEditingPomTime(true);
+      }
+    };
+    
+    const handleBrkTimeClick = () => {
+      if (!isTimerActive) {
+        setIsEditingBrkTime(true);
+      }
+    };
+    
+    const handlePomTimeChange = (e) => {
+      setEditedPomTimerMin(e.target.value);
+    };
+    
+    const handleBrkTimeChange = (e) => {
+      setEditedBrkTimerMin(e.target.value);
+    };
+    
+    const handlePomTimeBlur = () => {
+      setPomTimerMin(editedPomTimerMin);
+      setIsEditingPomTime(false);
+    };
+    
+    const handleBrkTimeBlur = () => {
+      setBrkTimerMin(editedBrkTimerMin);
+      setIsEditingBrkTime(false);
+    };
     
 
     useEffect(() => {
@@ -111,6 +148,7 @@ export default function Pomodoro ({lightMode}){
       }
     }
 
+
     return (
       <div className={`pomodoroContainer ${lightMode ? "" : "light"}`}>
         <div className='timers'>
@@ -119,7 +157,7 @@ export default function Pomodoro ({lightMode}){
                     <button className='timerOptBtn modeBtn'>
                         <img src={mute? Sound:Mute} onClick={handleMute}></img>
                     </button>
-                    {!isTimerActive && <h3 className={`bigTitle pomodoroModeTitle ${lightMode ? "" : "light"}`} onClick={changeMode}>{"Change Pomodoro mode"}</h3>}
+                    {!isTimerActive && <p className={`bigTitle pomodoroModeTitle ${lightMode ? "" : "light"}`} onClick={changeMode}>{"Click to change Pomodoro mode"}</p>}
                     <h2 className={`bigTitle ${lightMode ? "" : "light"}`}>{isBreak? "Break":"Work!"}</h2>
                     <button className='timerOptBtn modeBtn' onClick={showControlsFct}>
                         <img src={Config}></img>
@@ -131,9 +169,44 @@ export default function Pomodoro ({lightMode}){
                       </button>
                       </div>}
                 </div>
-                <p className='timerTime'>
-                    {isBreak? `${brkTimerMin.toString().padStart(2, '0')}:${brkTimerSec.toString().padStart(2, '0')}`:`${pomTimerMin.toString().padStart(2, '0')}:${pomTimerSec.toString().padStart(2, '0')}`}
-                </p>
+                <div className='timerTime'>
+                  {/* {isBreak? `${brkTimerMin.toString().padStart(2, '0')}:${brkTimerSec.toString().padStart(2, '0')}`:`${pomTimerMin.toString().padStart(2, '0')}:${pomTimerSec.toString().padStart(2, '0')}`} */}
+                  {isEditingPomTime? (
+                    !isBreak && <input
+                      type="number"
+                      value={editedPomTimerMin}
+                      onChange={handlePomTimeChange}
+                      onBlur={handlePomTimeBlur}
+                      min="1"
+                    />
+                    
+                    ) 
+                    : 
+                    (
+                      !isBreak && <p onClick={handlePomTimeClick}>
+                        {`${pomTimerMin.toString().padStart(2, '0')}:${pomTimerSec.toString().padStart(2, '0')}`}
+                      </p>
+                    )
+                  }
+                  {isEditingBrkTime ? (
+                    isBreak && <input
+                      type="number"
+                      value={editedBrkTimerMin}
+                      onChange={handleBrkTimeChange}
+                      onBlur={handleBrkTimeBlur}
+                      min="1"
+                    />
+                    ) 
+                    : 
+                    (
+                      isBreak && <p onClick={handleBrkTimeClick}>
+                        {`${brkTimerMin.toString().padStart(2, '0')}:${brkTimerSec.toString().padStart(2, '0')}`}
+                      </p>
+                    )
+                    }
+                </ div>
+                {!isTimerActive && <p className='editText'>click numbers to edit</p>}
+
             </div>
         </div>
         <div className='timerControls'>
