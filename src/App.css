@@ -202,13 +202,22 @@ p{
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  margin-bottom: 1em;
 }
 .controls {
   width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.noMargin{
+  margin: 0;
+}
+.taskInputDiv{
+  display: flex;
+    align-items: center;
+}
+.urgent{
+  background-color: rgba(169, 36, 36, 0.4);
 }
 .bottomControls {
   display: flex;

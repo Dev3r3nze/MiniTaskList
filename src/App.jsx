@@ -15,10 +15,11 @@ function App() {
   const [tasks, setTasks] = useState([])
   const [lightMode, setLightMode] = useState([false])
   const [fullScreen, setFullScreen] = useState(false)
+  const [urgent, setUrgent] = useState(false)
   const [showPomodoro, setShowPomodoro] = useState(true)
   const [showPlaylist, setShowPlaylist] = useState(false)
 
-  const inputRef = useRef(null);
+  const inputRef = useRef(null)
 
 
   // var mainTask
@@ -26,8 +27,8 @@ function App() {
   useEffect(() => {
     // Recuperar tareas almacenadas en localStorage al iniciar la aplicación
     const storedTasks = JSON.parse(localStorage.getItem("tasks")) || []
-    const lastBackground = localStorage.getItem("backImg");
-    document.getElementById('bckImg').style.backgroundImage = lastBackground;
+    const lastBackground = localStorage.getItem("backImg")
+    document.getElementById('bckImg').style.backgroundImage = lastBackground
     setTasks(storedTasks)
     document.getElementById("showPlaylistCheck").checked = true
   }, [])
@@ -45,12 +46,20 @@ function App() {
   //   }
   // }
 
+  const handleUrgentChange = (event) => {
+    const isChecked = event.target.checked
+    setUrgent(isChecked) // Actualiza el estado de la tarea urgente
+  }
+
   function handleCreate() {
     const input = document.getElementById("titleInput")
+    document.getElementById("urgentInput").checked = false
+    setUrgent(false)
+    const urgentBool = urgent
     const title = input.value
     input.value = ""
     const taskId = uuidv4()
-    const newTask = { id: taskId, title, finished: false, istitle: false }
+    const newTask = { id: taskId, title, finished: false, istitle: false, urgent: urgentBool }
     if (title.trim() !== "") {
       setTasks((prevTasks) => [...prevTasks, newTask])
       localStorage.setItem("tasks", JSON.stringify([...tasks, newTask]))
@@ -139,21 +148,21 @@ function App() {
   }
 
   const handleCambiarImagen = () => {
-    inputRef.current.click();
-  };
+    inputRef.current.click()
+  }
 
   const handleSeleccionarImagen = (event) => {
-    const archivo = event.target.files[0];
-    const lector = new FileReader();
+    const archivo = event.target.files[0]
+    const lector = new FileReader()
 
     lector.onload = function () {
       const newBackground = `url(${lector.result})`
-      document.getElementById('bckImg').style.backgroundImage = newBackground;
+      document.getElementById('bckImg').style.backgroundImage = newBackground
       localStorage.setItem("backImg",newBackground)
 
-    };
+    }
 
-    lector.readAsDataURL(archivo);
+    lector.readAsDataURL(archivo)
   }
   return (
     <>
@@ -183,7 +192,17 @@ function App() {
             <div className="controls">
               <p className="auxText">Describe your task</p>
               <form action="" onSubmit={handleSubmit}>
-                <input type="text" id="titleInput" />
+                <div className="taskInputDiv">
+                  <input type="text" id="titleInput" />
+                  <label htmlFor="urgent">❗</label>
+                  <input
+                    type="checkbox"
+                    name="urgent"
+                    className="noMargin"
+                    id="urgentInput"
+                    onChange={handleUrgentChange} // Agrega el manejador onChange
+                  />
+                </div>
                 <br />
                 <button className="taskBtn" onClick={handleCreate}>
                   Add task
@@ -225,6 +244,7 @@ function App() {
                           finished={task.finished}
                           isTitle={task.istitle}
                           id={task.id}
+                          urgent={task.urgent}
                           setFinished={(value) =>
                             setTasks((prevTasks) =>
                               prevTasks.map((t, i) =>
@@ -290,8 +310,8 @@ function App() {
         </div>
       </div>
       
-      {showPlaylist && <iframe src="https://open.spotify.com/embed/playlist/0kJbt84YUcL53AH59mJ4qk?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>}
-      {/* {showPlaylist && <iframe style={{borderRadius:"12px", src:"https://open.spotify.com/embed/playlist/0kJbt84YUcL53AH59mJ4qk?utm_source=generator&theme=0", width:"100%", height:"352", frameBorder:"0", allowFullScreen:"", allow:"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture", loading:"lazy"}}></iframe>} */}
+      {showPlaylist && <iframe src="https://open.spotify.com/embed/playlist/0kJbt84YUcL53AH59mJ4qk?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowFullScreen="" allow="autoplay clipboard-write encrypted-media fullscreen picture-in-picture" loading="lazy"></iframe>}
+      {/* {showPlaylist && <iframe style={{borderRadius:"12px", src:"https://open.spotify.com/embed/playlist/0kJbt84YUcL53AH59mJ4qk?utm_source=generator&theme=0", width:"100%", height:"352", frameBorder:"0", allowFullScreen:"", allow:"autoplay clipboard-write encrypted-media fullscreen picture-in-picture", loading:"lazy"}}></iframe>} */}
     </div>
     </>
   )
