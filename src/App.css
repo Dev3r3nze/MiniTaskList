@@ -209,8 +209,8 @@ p{
   flex-direction: column;
   align-items: center;
 }
-.noMargin{
-  margin: 0;
+.urgentInput{
+  margin-left: 1rem;
 }
 .taskInputDiv{
   display: flex;

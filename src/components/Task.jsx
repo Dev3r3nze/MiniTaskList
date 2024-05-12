@@ -13,9 +13,9 @@ export default function Task({ title, finished, setFinished, lightMode, isTitle,
                 onChange={handleChangeFinished}
             />}
             {finished ? (
-                <label className={`taskTittle ${lightMode? "": "light"}`}><del>{title}</del></label>
+                <label className={`taskTittle ${lightMode? "": "light"}`}><del>{title}</del>{urgent? "❗":""}</label>
             ) : (
-                <label className={`taskTittle ${lightMode? "": "light"}`}>{title}</label>
+                <label className={`taskTittle ${lightMode? "": "light"}`}>{title}{urgent? "❗":""}</label>
             )}
         </div>
     )

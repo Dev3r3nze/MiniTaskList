@@ -194,14 +194,15 @@ function App() {
               <form action="" onSubmit={handleSubmit}>
                 <div className="taskInputDiv">
                   <input type="text" id="titleInput" />
-                  <label htmlFor="urgent">❗</label>
                   <input
                     type="checkbox"
                     name="urgent"
-                    className="noMargin"
+                    className="urgentInput"
                     id="urgentInput"
                     onChange={handleUrgentChange} // Agrega el manejador onChange
                   />
+                  <label htmlFor="urgent">❗</label>
+
                 </div>
                 <br />
                 <button className="taskBtn" onClick={handleCreate}>
