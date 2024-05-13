@@ -135,10 +135,12 @@ del{
 }
 .task {
   width: 75%;
-  margin: 0.1rem 0
+  margin: 0.1rem 0;
+  text-align: justify;
 }
 .taskTitle {
   width: 100%;
+  text-align: center;
 }
 
 .bigTitle {
