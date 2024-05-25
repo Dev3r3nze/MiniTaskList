@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 /* eslint-disable react/prop-types */
 export default function Task({
   title,
@@ -8,7 +10,22 @@ export default function Task({
   urgent,
   emoji,
   dueDate,
+  description
 }) {
+
+  let timer;
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  function handleMouseOver() {
+    timer = setTimeout(() => {
+      setShowTooltip(true);
+    }, 2000); // 2 segundos
+  }
+
+  function handleMouseOut() {
+    clearTimeout(timer);
+    setShowTooltip(false);
+  }
 
   function handleChangeFinished() {
     setFinished(!finished);
@@ -24,6 +41,8 @@ export default function Task({
     <div
       className={`task ${isTitle ? 'taskTitle' : ''} ${urgent ? 'urgent' : ''} dFlex`}
       onClick={handleChangeFinished}
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
     >
       {isTitle == false && (
         <input
@@ -56,6 +75,8 @@ export default function Task({
         )}
         </label>
       )}
+      {showTooltip && <div className="tooltip">{description}</div>}
+
     </div>
   );
 }

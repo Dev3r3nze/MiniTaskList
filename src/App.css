@@ -210,7 +210,34 @@ del{
   width: 75%;
   margin: 0.1rem 0;
   text-align: justify;
+  position: relative; 
 }
+.task .tooltip {
+  /* visibility: hidden; */
+  width: 200px;
+  background-color: #353535;
+  color: rgb(150, 150, 150);
+  text-align: center;
+  border-radius: 5px;
+  padding: 2px;
+  position: absolute;
+  z-index: 1;
+  top: 100%; /* Posición del tooltip */
+  left: 50%;
+  margin-left: -100px; /* Usa la mitad del ancho para centrar el tooltip */
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.descInput{
+  margin-left: 10px;
+}
+
+.task:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
 .taskTitle {
   width: 86%;
   text-align: center;

@@ -2,36 +2,22 @@ import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Task from "./components/Task";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { v4 as uuidv4 } from "uuid"; // importa uuid
 import lightImg from "./assets/day.png";
 import nightImg from "./assets/night.png";
 import screenSizeImg from "./assets/screenSize.png";
 import miniScreenSizeImg from "./assets/min.png";
 import changeBckImg from "./assets/bckimgChange.png";
 import Pomodoro from "./components/Pomodoro";
-import data from "@emoji-mart/data";
-import { init } from "emoji-mart";
-import Picker from "@emoji-mart/react";
-init({ data });
+import TaskForm from "./components/TaskForm";
 
 function App() {
   const [tasks, setTasks] = useState([]);
   const [lightMode, setLightMode] = useState([false]);
   const [fullScreen, setFullScreen] = useState(false);
-  const [urgent, setUrgent] = useState(false);
   const [showPomodoro, setShowPomodoro] = useState(true);
   const [showPlaylist, setShowPlaylist] = useState(false);
 
-  const [showAdvanced, setShowAdvanced] = useState(false);
-  const [emoji, setEmoji] = useState("");
-  const [showPicker, setShowPicker] = useState(false);
-  const [dueDate, setDueDate] = useState();
-  const pickerRef = useRef();
-
-
   const inputRef = useRef(null);
-
-  // var mainTask
 
   useEffect(() => {
     // Recuperar tareas almacenadas en localStorage al iniciar la aplicación
@@ -40,115 +26,19 @@ function App() {
     document.getElementById("bckImg").style.backgroundImage = lastBackground;
     setTasks(storedTasks);
     document.getElementById("showPlaylistCheck").checked = true;
-
-    
   }, []);
 
-  // const taskListRef = useRef(null)
-  // // Función para almacenar la referencia original y activar Picture-in-Picture
-  // const setTaskListRef = (ref) => {
-  //   taskListRef.current = ref
-  //   // Puedes hacer algo más con la referencia si es necesario
-  // }
-  // Función para activar Picture-in-Picture
-  // const enterPiPMode = () => {
-  //   if (taskListRef.current) {
-  //     taskListRef.current.requestPictureInPicture()
-  //   }
-  // }
-
-  const handleUrgentChange = (event) => {
-    const isChecked = event.target.checked;
-    setUrgent(isChecked); // Actualiza el estado de la tarea urgente
-  };
-
-  function handleCreate() {
-    const input = document.getElementById("titleInput");
-    const title = input.value;
-    var urgentBool = false;
-
-    input.value = "";
-    const taskId = uuidv4();
-    if (showAdvanced) {
-      document.getElementById("urgentInput").checked = false;
-      setUrgent(false);
-      urgentBool = urgent;
-    } else {
-      setEmoji("");
-    }
-    const newTask = {
-      id: taskId,
-      title,
-      finished: false,
-      istitle: false,
-      urgent: urgentBool,
-      emoji: showAdvanced ? emoji : "",
-      dueDate: dueDate,
-    };
-    if (title.trim() !== "") {
-      setTasks((prevTasks) => [...prevTasks, newTask]);
-      localStorage.setItem("tasks", JSON.stringify([...tasks, newTask]));
-    }
-    setEmoji("");
-    setDueDate("");
-  }
-
-  function handleSpacer() {
-    const input = document.getElementById("titleInput");
-    const totalLenght = 40;
-    // Calcular la cantidad de caracteres "━" que se deben agregar en cada lado
-    const addChars = Math.floor((totalLenght - input.value.length - 6) / 2);
-    // Construir el título con los caracteres "━" adicionales
-    const title = `┏${"━".repeat(addChars)} ${input.value} ${"━".repeat(
-      addChars
-    )}┓`;
-    var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
-    if (title.split("").length % 2 == 0) {
-      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
-    }
-
-    const taskId = uuidv4();
-    const taskIdSub = `Sub${taskId}`;
-    const newTitle = { id: taskId, title, finished: false, istitle: true };
-    const newSubTitle = {
-      id: taskIdSub,
-      title: subTitle,
-      finished: false,
-      istitle: true,
-    };
-
-    if (input.value !== "") {
-      setTasks((prevTasks) => [...prevTasks, newTitle]);
-      setTasks((prevTasks) => [...prevTasks, newSubTitle]);
-      localStorage.setItem(
-        "tasks",
-        JSON.stringify([...tasks, newTitle, newSubTitle])
-      );
-    }
-    input.value = "";
-  }
-
-  const handleEmojiSelect = (emoji) => {
-    setEmoji(emoji.native);
-  };
-
+  // Función que borra tasks
   function handleDelete() {
     setTasks((prevTasks) => {
       const newTasks = prevTasks.filter((task) => !task.finished);
-
       // Guardar las tareas actualizadas en localStorage
       localStorage.setItem("tasks", JSON.stringify(newTasks));
       return newTasks;
     });
   }
 
-  function handleMode() {
-    setLightMode(!lightMode);
-  }
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+  // Función que maneja el arrastre
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
@@ -160,11 +50,10 @@ function App() {
     localStorage.setItem("tasks", JSON.stringify(reorderedTasks));
   };
 
+  // Función que maneza el modo de pantalla completa
   function handleScreenSize() {
     const element = document.documentElement;
-
     setFullScreen(!fullScreen);
-
     if (!fullScreen) {
       if (element.requestFullscreen) {
         element.requestFullscreen();
@@ -179,38 +68,8 @@ function App() {
       }
     }
   }
-  function handleShowPomodoro() {
-    setShowPomodoro(!showPomodoro);
-  }
-  function handleShowPlaylist() {
-    setShowPlaylist(!showPlaylist);
-  }
 
-  const handleCambiarImagen = () => {
-    inputRef.current.click();
-  };
-
-  const handleIconPicker = () => {
-    setShowPicker((prev) => !prev);
-    console.log(showPicker)
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
-        setShowPicker(false);
-      }
-    };
-
-    // Agregar el manejador de eventos al documento
-    document.addEventListener('click', handleClickOutside);
-
-    // Limpiar el manejador de eventos al desmontar el componente
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [showPicker]);
-
+  // Función que selecciona imagen de fondo
   const handleSeleccionarImagen = (event) => {
     const archivo = event.target.files[0];
     const lector = new FileReader();
@@ -223,6 +82,7 @@ function App() {
 
     lector.readAsDataURL(archivo);
   };
+
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -238,7 +98,7 @@ function App() {
                 provided.innerRef(el);
               }}
             >
-              {/* <button onClick={enterPiPMode}>PiP</button> */}
+              {/* Título y botones */}
               <div className="headerDiv">
                 <button
                   onClick={handleScreenSize}
@@ -251,84 +111,20 @@ function App() {
                 <h1 className={`bigTitle ${lightMode ? "" : "light"}`}>
                   Tasks
                 </h1>
-                <button onClick={handleMode} className="modeBtn">
+                <button
+                  onClick={() => setLightMode(!lightMode)}
+                  className="modeBtn"
+                >
                   <img src={lightMode ? lightImg : nightImg}></img>
                 </button>
               </div>
+              {/* Controles */}
               <div className="controls">
                 <p className="auxText">Describe your task</p>
-                <form action="" onSubmit={handleSubmit}>
-                  <div className="taskInputDiv">
-                    <input type="text" id="titleInput" />
-                    {/* Desplegable */}
-                    <button
-                      type="button"
-                      className="advanceArrowBtn"
-                      onClick={() => setShowAdvanced(!showAdvanced)}
-                    >
-                      <p className={`${showAdvanced ? "upSide" : "downSide"}`}>
-                        {">"}
-                      </p>
-                    </button>
-                  </div>
-                  {showAdvanced && (
-                    <div className="advancedOptions">
-                      <label className="urgentLabel" htmlFor="urgent">
-                        {" "}
-                        Set as urgent:
-                        <input
-                          type="checkbox"
-                          name="urgent"
-                          className="urgentInput"
-                          id="urgentInput"
-                          onChange={handleUrgentChange} // Agrega el manejador onChange
-                        />
-                      </label>
-                      <label htmlFor="dueDate" className="dateLabel">
-                        Due date:
-                        <input
-                          type="date"
-                          value={dueDate}
-                          onChange={(e) => setDueDate(e.target.value)}
-                          name="dueDate"
-                          className="dateInput"
-                        ></input>
-                      </label>
-                      <label htmlFor="emojiInput" className="iconSelector">
-                        Icon:{" "}
-                        <span ref={pickerRef}  onClick={handleIconPicker} className={`emojiBox ${emoji ? "" : "empty"}`}>
-                          {emoji}
-                        </span>
-                      </label>
-                      {showPicker && (
-                        <div className="emojiPicker" >
-                          <Picker
-                            data={data}
-                            onEmojiSelect={handleEmojiSelect}
-                            title="Selecciona un emoji"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  <br />
-                  <button className="taskBtn" onClick={handleCreate}>
-                    Add task
-                  </button>
-                  <button className="spacerBtn" onClick={handleSpacer}>
-                    Add title
-                  </button>
-                </form>
+                <TaskForm setTasks={setTasks} tasks={tasks}></TaskForm>
               </div>
 
-              {/* Pendiente */}
-              {/* <div className="miniTaskContainer">
-              {!mainTask && (
-                <p className="waitTxt">
-                  <i>Waiting for the main task...</i>
-                </p>
-              )}
-            </div> */}
+              {/* Contenedor tasks */}
               <div className="taskContainer">
                 {tasks.length > 0 &&
                   tasks.map((task, index) => (
@@ -344,6 +140,7 @@ function App() {
                           {...provided.dragHandleProps}
                           className="taskDiv"
                         >
+                          {/* Cada tarea */}
                           <Task
                             style={
                               snapshot.isDragging &&
@@ -358,6 +155,7 @@ function App() {
                             urgent={task.urgent}
                             emoji={task.emoji}
                             dueDate={task.dueDate}
+                            description={task.description}
                             setFinished={(value) =>
                               setTasks((prevTasks) =>
                                 prevTasks.map((t, i) =>
@@ -372,12 +170,14 @@ function App() {
                     </Draggable>
                   ))}
                 {provided.placeholder}
+                {/* Texto si no hay tareas */}
                 {tasks.length == 0 && (
                   <p className="waitTxt">
                     <i>Waiting for tasks...</i>
                   </p>
                 )}
               </div>
+              {/* Borrar tareas y contador */}
               <div className="bottomControls">
                 <button className="taskBtn deleteBtn" onClick={handleDelete}>
                   Delete completed task
@@ -398,21 +198,28 @@ function App() {
           )}
         </Droppable>
       </DragDropContext>
+      {/* Pomodoro selector*/}
       <div className="showPomodoroDiv">
         <p className="auxText">Show pomodoro</p>
-        {/* <input type="range" max="1" min="0" step="1" onChange={handleShowPomodoro}/> */}
         <div className="button r" id="button-1">
           <input
             type="checkbox"
             className="checkbox"
-            onChange={handleShowPomodoro}
+            onChange={() => setShowPomodoro(!showPomodoro)}
           />
           <div className="knobs"></div>
           <div className="layer"></div>
         </div>
       </div>
+      {/* Pomodoro */}
       {showPomodoro && <Pomodoro lightMode={lightMode} />}
-      <button id="boton" className="modeBtn" onClick={handleCambiarImagen}>
+
+      {/* Botón para cambiar de fondo */}
+      <button
+        id="boton"
+        className="modeBtn"
+        onClick={() => inputRef.current.click()}
+      >
         <img src={changeBckImg}></img>
       </button>
       <input
@@ -423,6 +230,7 @@ function App() {
         accept="image/*"
         onChange={handleSeleccionarImagen}
       />
+      {/* Playlist selector */}
       <div className="playlist">
         <div className="showPomodoroDiv fullwidth">
           <p className="auxText">Show playlist</p>
@@ -432,13 +240,13 @@ function App() {
               type="checkbox"
               className="checkbox"
               id="showPlaylistCheck"
-              onChange={handleShowPlaylist}
+              onChange={() => setShowPlaylist(!showPlaylist)}
             />
             <div className="knobs"></div>
             <div className="layer"></div>
           </div>
         </div>
-
+        {/* Playlist */}
         {showPlaylist && (
           <iframe
             src="https://open.spotify.com/embed/playlist/0kJbt84YUcL53AH59mJ4qk?utm_source=generator&theme=0"
@@ -460,8 +268,4 @@ export default App;
 
 ///// Extras
 // Cita motivadora random
-// Ordenar
-// Urgencia
-// Guardar en localstorage
-// Contador tareas pendientes
 // Tiempo aprox tarea
