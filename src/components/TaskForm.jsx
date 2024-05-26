@@ -1,36 +1,59 @@
-import { useState, useRef,useEffect } from "react"
-import { v4 as uuidv4 } from "uuid"
-import data from "@emoji-mart/data"
-import { init } from "emoji-mart"
-import Picker from "@emoji-mart/react"
-init({ data })
+import { useState, useRef, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import data from "@emoji-mart/data";
+import { init } from "emoji-mart";
+import Picker from "@emoji-mart/react";
+init({ data });
 
 // eslint-disable-next-line react/prop-types
 export default function TaskForm({ setTasks, tasks }) {
-  const [showAdvanced, setShowAdvanced] = useState(false)
-  const [emoji, setEmoji] = useState("")
-  const [showPicker, setShowPicker] = useState(false)
-  const [dueDate, setDueDate] = useState()
-  const pickerRef = useRef()
-  const [urgent, setUrgent] = useState(false)
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [emoji, setEmoji] = useState("");
+  const [showPicker, setShowPicker] = useState(false);
+  const [dueDate, setDueDate] = useState();
+  const pickerRef = useRef();
+  const [urgent, setUrgent] = useState(false);
   const [desc, setDesc] = useState("");
 
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setOffset({
+      x: e.clientX - position.x,
+      y: e.clientY - position.y,
+    });
+  };
+
+  const handleMouseMove = (e) => {
+    if (isDragging) {
+      setPosition({
+        x: e.clientX - offset.x,
+        y: e.clientY - offset.y,
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
 
   function handleCreate() {
-    const input = document.getElementById("titleInput")
-    const title = input.value
-    var urgentBool = false
+    const input = document.getElementById("titleInput");
+    const title = input.value;
+    var urgentBool = false;
     const description = document.getElementById("descInput").value;
 
-
-    input.value = ""
-    const taskId = uuidv4()
+    input.value = "";
+    const taskId = uuidv4();
     if (showAdvanced) {
-      document.getElementById("urgentInput").checked = false
-      setUrgent(false)
-      urgentBool = urgent
+      document.getElementById("urgentInput").checked = false;
+      setUrgent(false);
+      urgentBool = urgent;
     } else {
-      setEmoji("")
+      setEmoji("");
     }
     const newTask = {
       id: taskId,
@@ -40,84 +63,84 @@ export default function TaskForm({ setTasks, tasks }) {
       urgent: urgentBool,
       emoji: showAdvanced ? emoji : "",
       dueDate: dueDate,
-      description
-    }
+      description,
+    };
     if (title.trim() !== "") {
-      setTasks((prevTasks) => [...prevTasks, newTask])
-      localStorage.setItem("tasks", JSON.stringify([...tasks, newTask]))
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+      localStorage.setItem("tasks", JSON.stringify([...tasks, newTask]));
     }
-    setEmoji("")
-    setDueDate("")
-    setDesc("")
-    document.getElementById("descInput").value = ""
+    setEmoji("");
+    setDueDate("");
+    setDesc("");
+    document.getElementById("descInput").value = "";
+    setShowPicker(!showPicker)
   }
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (pickerRef.current && !pickerRef.current.contains(event.target)) {
-        setShowPicker(false)
+        setShowPicker(false);
       }
-    }
+    };
 
     // Agregar el manejador de eventos al documento
-    document.addEventListener("click", handleClickOutside)
+    document.addEventListener("click", handleClickOutside);
 
     // Limpiar el manejador de eventos al desmontar el componente
     return () => {
-      document.removeEventListener("click", handleClickOutside)
-    }
-  }, [showPicker])
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [showPicker]);
 
   function handleSpacer() {
-    const input = document.getElementById("titleInput")
-    const totalLenght = 40
+    const input = document.getElementById("titleInput");
+    const totalLenght = 40;
     // Calcular la cantidad de caracteres "━" que se deben agregar en cada lado
-    const addChars = Math.floor((totalLenght - input.value.length - 6) / 2)
+    const addChars = Math.floor((totalLenght - input.value.length - 6) / 2);
     // Construir el título con los caracteres "━" adicionales
     const title = `┏${"━".repeat(addChars)} ${input.value} ${"━".repeat(
       addChars
-    )}┓`
-    var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+    )}┓`;
+    var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
     if (title.split("").length % 2 == 0) {
-      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
+      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
     }
 
-    const taskId = uuidv4()
-    const taskIdSub = `Sub${taskId}`
-    const newTitle = { id: taskId, title, finished: false, istitle: true }
+    const taskId = uuidv4();
+    const taskIdSub = `Sub${taskId}`;
+    const newTitle = { id: taskId, title, finished: false, istitle: true };
     const newSubTitle = {
       id: taskIdSub,
       title: subTitle,
       finished: false,
       istitle: true,
-    }
+    };
 
     if (input.value !== "") {
-      setTasks((prevTasks) => [...prevTasks, newTitle])
-      setTasks((prevTasks) => [...prevTasks, newSubTitle])
+      setTasks((prevTasks) => [...prevTasks, newTitle]);
+      setTasks((prevTasks) => [...prevTasks, newSubTitle]);
       localStorage.setItem(
         "tasks",
         JSON.stringify([...tasks, newTitle, newSubTitle])
-      )
+      );
     }
-    input.value = ""
+    input.value = "";
   }
 
   const handleEmojiSelect = (emoji) => {
-    setEmoji(emoji.native)
-  }
+    setEmoji(emoji.native);
+  };
   const handleSubmit = (event) => {
-    event.preventDefault()
-  }
+    event.preventDefault();
+  };
 
   const handleIconPicker = () => {
-    setShowPicker((prev) => !prev)
-    console.log(showPicker)
-  }
+    setShowPicker((prev) => !prev);
+  };
   const handleUrgentChange = (event) => {
-    const isChecked = event.target.checked
-    setUrgent(isChecked) // Actualiza el estado de la tarea urgente
-  }
+    const isChecked = event.target.checked;
+    setUrgent(isChecked); // Actualiza el estado de la tarea urgente
+  };
 
   return (
     <form action="" onSubmit={handleSubmit}>
@@ -166,7 +189,12 @@ export default function TaskForm({ setTasks, tasks }) {
             </span>
           </label>
           {showPicker && (
-            <div className="emojiPicker">
+            <div className="emojiPicker"  
+            id="pickerContainer"
+            style={{ left: `${position.x}px`, top: `${position.y}px` }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}>
               <Picker
                 data={data}
                 onEmojiSelect={handleEmojiSelect}
@@ -174,8 +202,16 @@ export default function TaskForm({ setTasks, tasks }) {
               />
             </div>
           )}
-          <label htmlFor="desc"> Description: 
-          <input type="text" className="descInput" id="descInput" value={desc} onChange={(e) => setDesc(e.target.value)} />
+          <label htmlFor="desc">
+            {" "}
+            Description:
+            <input
+              type="text"
+              className="descInput"
+              id="descInput"
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+            />
           </label>
         </div>
       )}
@@ -187,5 +223,5 @@ export default function TaskForm({ setTasks, tasks }) {
         Add title
       </button>
     </form>
-  )
+  );
 }

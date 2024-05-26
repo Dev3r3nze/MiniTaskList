@@ -136,6 +136,10 @@ del{
   top: 22%;
   left: 34%;
   user-select: none;
+  z-index: 10;
+}
+.emojiPicker:hover{
+  cursor: move;
 }
 .taskDueDate {
   font-size: 12px;
@@ -232,6 +236,7 @@ del{
 .descInput{
   margin-left: 10px;
 }
+
 
 .task:hover .tooltip {
   visibility: visible;
