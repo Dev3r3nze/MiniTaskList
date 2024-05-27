@@ -17,9 +17,11 @@ export default function Task({
   const [showTooltip, setShowTooltip] = useState(false);
 
   function handleMouseOver() {
-    timer = setTimeout(() => {
-      setShowTooltip(true);
-    }, 2000); // 2 segundos
+    if(description != ""){
+      timer = setTimeout(() => {
+        setShowTooltip(true);
+      }, 2000); // 2 segundos
+    }
   }
 
   function handleMouseOut() {

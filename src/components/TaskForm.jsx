@@ -44,11 +44,12 @@ export default function TaskForm({ setTasks, tasks }) {
     const input = document.getElementById("titleInput");
     const title = input.value;
     var urgentBool = false;
-    const description = document.getElementById("descInput").value;
-
+    var description  = ""
     input.value = "";
     const taskId = uuidv4();
     if (showAdvanced) {
+      description = document.getElementById("descInput").value;
+
       document.getElementById("urgentInput").checked = false;
       setUrgent(false);
       urgentBool = urgent;
@@ -69,10 +70,10 @@ export default function TaskForm({ setTasks, tasks }) {
       setTasks((prevTasks) => [...prevTasks, newTask]);
       localStorage.setItem("tasks", JSON.stringify([...tasks, newTask]));
     }
+    if(showAdvanced) document.getElementById("descInput").value = "";
     setEmoji("");
     setDueDate("");
     setDesc("");
-    document.getElementById("descInput").value = "";
     setShowPicker(!showPicker)
   }
 
