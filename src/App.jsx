@@ -9,6 +9,7 @@ import miniScreenSizeImg from "./assets/min.png";
 import changeBckImg from "./assets/bckimgChange.png";
 import Pomodoro from "./components/Pomodoro";
 import TaskForm from "./components/TaskForm";
+import ThrowSound from "./assets/throwSound.wav"
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -34,6 +35,10 @@ function App() {
       const newTasks = prevTasks.filter((task) => !task.finished);
       // Guardar las tareas actualizadas en localStorage
       localStorage.setItem("tasks", JSON.stringify(newTasks));
+
+      // Efecto de sonido
+      const audio = new Audio(ThrowSound)
+      audio.play()
       return newTasks;
     });
   }
