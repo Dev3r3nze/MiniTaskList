@@ -148,6 +148,9 @@ del{
 .pastDue {
   color: rgba(255, 0, 0, 0.5) !important /* Fondo rojo pastel con transparencia */
 }
+.almostPastDue {
+  color: rgba(255, 136, 0, 0.5) !important /* Fondo rojo pastel con transparencia */
+}
 .upSide{
   transform: rotate(270deg);
 }

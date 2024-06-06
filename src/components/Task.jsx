@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react"
 
 /* eslint-disable react/prop-types */
 export default function Task({
@@ -10,38 +10,46 @@ export default function Task({
   urgent,
   emoji,
   dueDate,
-  description
+  description,
 }) {
-
-  let timer;
-  const [showTooltip, setShowTooltip] = useState(false);
+  let timer
+  const [showTooltip, setShowTooltip] = useState(false)
 
   function handleMouseOver() {
-    if(description != ""){
+    if (description != "") {
       timer = setTimeout(() => {
-        setShowTooltip(true);
-      }, 2000); // 2 segundos
+        setShowTooltip(true)
+      }, 2000) // 2 segundos
     }
   }
 
   function handleMouseOut() {
-    clearTimeout(timer);
-    setShowTooltip(false);
+    clearTimeout(timer)
+    setShowTooltip(false)
   }
 
   function handleChangeFinished() {
-    setFinished(!finished);
+    setFinished(!finished)
   }
 
   const isDatePast = (dueDate) => {
-    const currentDate = new Date();
-    const taskDate = new Date(dueDate);
-    return taskDate < currentDate;
-  };
-  
+    const currentDate = new Date()
+    const taskDate = new Date(dueDate)
+    return taskDate < currentDate
+  }
+  const isDateAlmostPast = (dueDate) => {
+    const currentDate = new Date()
+    const taskDate = new Date(dueDate)
+    const timeDifference = taskDate - currentDate
+    const daysDifference = timeDifference / (1000 * 60 * 60 * 24) // Convertir milisegundos a días
+    return daysDifference <= 2 && daysDifference > 0
+  }
+
   return (
     <div
-      className={`task ${isTitle ? 'taskTitle' : ''} ${urgent ? 'urgent' : ''} dFlex`}
+      className={`task ${isTitle ? "taskTitle" : ""} ${
+        urgent ? "urgent" : ""
+      } dFlex`}
       onClick={handleChangeFinished}
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
@@ -57,28 +65,33 @@ export default function Task({
       {finished ? (
         <label className={`taskTittle ${lightMode ? "" : "light"}`}>
           <del>
-            {emoji} {title} 
+            {emoji} {title}
             {dueDate && (
-            <div className={`${isDatePast(dueDate) ? 'pastDue' : ''} taskDueDate`}>
-              {new Date(dueDate).toLocaleDateString()}
-            </div>
-          )}
+              <div
+                className={`${isDatePast(dueDate) ? "pastDue" : ""} ${
+                  isDateAlmostPast(dueDate) ? "almostPastDue" : ""
+                } taskDueDate`}
+              >
+                {new Date(dueDate).toLocaleDateString()}
+              </div>
+            )}
           </del>
-          
         </label>
       ) : (
         <label className={`taskTittle ${lightMode ? "" : "light"}`}>
           {emoji} {title}
-          
           {dueDate && (
-          <div className={`${isDatePast(dueDate) ? 'pastDue' : ''} taskDueDate`} >
-            {new Date(dueDate).toLocaleDateString()}
-          </div>
-        )}
+            <div
+              className={`${isDatePast(dueDate) ? "pastDue" : ""} ${
+                isDateAlmostPast(dueDate) ? "almostPastDue" : ""
+              } taskDueDate`}
+            >
+              {new Date(dueDate).toLocaleDateString()}
+            </div>
+          )}
         </label>
       )}
       {showTooltip && <div className="tooltip">{description}</div>}
-
     </div>
-  );
+  )
 }
