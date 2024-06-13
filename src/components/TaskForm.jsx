@@ -95,16 +95,16 @@ export default function TaskForm({ setTasks, tasks }) {
 
   function handleSpacer() {
     const input = document.getElementById("titleInput");
-    const totalLenght = 40;
+    const totalLenght = 38;
     // Calcular la cantidad de caracteres "━" que se deben agregar en cada lado
     const addChars = Math.floor((totalLenght - input.value.length - 6) / 2);
     // Construir el título con los caracteres "━" adicionales
     const title = `┏${"━".repeat(addChars)} ${input.value} ${"━".repeat(
       addChars
     )}┓`;
-    var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
+    var subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
     if (title.split("").length % 2 == 0) {
-      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
+      subTitle = "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛";
     }
 
     const taskId = uuidv4();
