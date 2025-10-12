@@ -17,6 +17,7 @@ function App() {
   const [fullScreen, setFullScreen] = useState(false);
   const [showPomodoro, setShowPomodoro] = useState(true);
   const [showPlaylist, setShowPlaylist] = useState(false);
+  const [showTaskContainer, setShowTaskContainer] = useState(true);
 
   const inputRef = useRef(null);
 
@@ -88,6 +89,7 @@ function App() {
     lector.readAsDataURL(archivo);
   };
 
+
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -130,7 +132,7 @@ function App() {
               </div>
 
               {/* Contenedor tasks */}
-              <div className="taskContainer">
+              <div className="taskContainer" style={{display: showTaskContainer ? "block" : "none"}}>
                 {tasks.length > 0 &&
                   tasks.map((task, index) => (
                     <Draggable
@@ -203,6 +205,19 @@ function App() {
           )}
         </Droppable>
       </DragDropContext>
+      {/* TaskContainer selector*/}
+      <div className="showTaskContainerDiv">
+        <p className="auxText">Show task container</p>
+        <div className="button r" id="button-1">
+          <input
+            type="checkbox"
+            className="checkbox"
+            onChange={() => setShowTaskContainer(!showTaskContainer)}
+          />
+          <div className="knobs"></div>
+          <div className="layer"></div>
+        </div>
+      </div>
       {/* Pomodoro selector*/}
       <div className="showPomodoroDiv">
         <p className="auxText">Show pomodoro</p>
